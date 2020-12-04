@@ -20,7 +20,17 @@ public class Task5 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
-    return new ArrayList<>();
+
+    // Как обычно создаем пустой лист с изветсной capacity
+    // В цикле конвертируем Person в DTO
+    // как я понимаю, асимптотика тут O(n)
+    List<ApiPersonDto> dtoList = new ArrayList<>(persons.size());
+    for (Person person : persons) {
+      dtoList.add(convert(person,
+              personAreaIds.get(person.getId())));
+    }
+
+    return dtoList;
   }
 
   private static ApiPersonDto convert(Person person, Integer areaId) {
