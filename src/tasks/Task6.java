@@ -5,11 +5,7 @@ import common.Person;
 import common.Task;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /*
 Имеются
@@ -23,7 +19,25 @@ public class Task6 implements Task {
   private Set<String> getPersonDescriptions(Collection<Person> persons,
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
-    return new HashSet<>();
+
+    Set<String> name_area = new HashSet<>();
+    Map<Integer, String> areasMap = new HashMap<>();
+
+    for (Area area : areas) {
+      areasMap.put(area.getId(), area.getName());
+    }
+
+    Set<Integer> set = new HashSet<>();
+    for (Person person : persons) {
+      set = personAreaIds.get(person.getId());
+
+      for (Integer areaId : set) {
+        name_area.add(person.getFirstName() + " - " + areasMap.get(areaId));
+      }
+    }
+    // Я подозреваю что тут асимптотика O(N*M)
+    // где N - размер коллекции Персон, а M - средниее количество городов на 1 персону.
+    return name_area;
   }
 
   @Override

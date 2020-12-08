@@ -14,7 +14,20 @@ import java.util.Set;
 public class Task7 implements Task {
 
   private Set<String> vacancyNames(Collection<Company> companies) {
-    return new HashSet<>();
+
+    // Асимптотика O(N*M)
+    // будет зависеть и от длины коллекции компаний (N), и от среднего числа вакансий по компаниям (M)
+    Set<String> vacancySet = new HashSet<>();
+
+    for (Company company : companies) {
+
+      for (Vacancy vacancy : company.getVacancies()) {
+        vacancySet.add(vacancy.getTitle());
+      }
+    }
+
+
+    return vacancySet;
   }
 
   @Override

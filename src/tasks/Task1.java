@@ -4,9 +4,7 @@ import common.Person;
 import common.PersonService;
 import common.Task;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -21,7 +19,24 @@ public class Task1 implements Task {
   // !!! Редактируйте этот метод !!!
   private List<Person> findOrderedPersons(List<Integer> personIds) {
     Set<Person> persons = PersonService.findPersons(personIds);
-    return Collections.emptyList();
+
+    // Создаю пустую мапу и лист. capacity нам заранее известен
+    Map<Integer, Person> mapOfPersons = new HashMap<>(personIds.size());
+    List<Person> personList = new ArrayList<>(personIds.size());
+
+    // Бежим по сету, закидывая в мапу: ключ - id, значение - Персона
+    // асимптотика O(n)
+    for (Person person : persons) {
+      mapOfPersons.put(person.getId(), person);
+    }
+    // бежим по нашему листу personIds, заполняя наш mapOfPersons
+    // асимптотика O(n)
+    for (Integer id : personIds) {
+      personList.add(mapOfPersons.get(id));
+    }
+    // в итоге асимптотика = 2 O(n).
+    // на сколько я помню - константа не учитывается, поэтому получается O(n)
+    return personList;
   }
 
   @Override

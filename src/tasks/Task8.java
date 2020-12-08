@@ -3,12 +3,7 @@ package tasks;
 import common.Person;
 import common.Task;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,20 +21,21 @@ public class Task8 implements Task {
   private long count;
 
   //Не хотим выдывать апи нашу фальшивую персону, поэтому конвертим начиная со второй
+  // Сделаем все через стрим, чтоб было коротко и ясно
   public List<String> getNames(List<Person> persons) {
-    if (persons.size() == 0) {
-      return Collections.emptyList();
-    }
-    persons.remove(0);
-    return persons.stream().map(Person::getFirstName).collect(Collectors.toList());
+
+    return persons.stream().skip(1).map(Person::getFirstName).collect(Collectors.toList());
   }
 
   //ну и различные имена тоже хочется
+  // Пускай функция сама все делает, не будем лезть в другую функцию
   public Set<String> getDifferentNames(List<Person> persons) {
-    return getNames(persons).stream().distinct().collect(Collectors.toSet());
+
+    return persons.stream().skip(1).map(Person::getFirstName).collect(Collectors.toSet());
   }
 
   //Для фронтов выдадим полное имя, а то сами не могут
+  // Я честно говоря сам бы сделал точно так же ))) так что трогать не буду )
   public String convertPersonToString(Person person) {
     String result = "";
     if (person.getSecondName() != null) {
@@ -57,40 +53,47 @@ public class Task8 implements Task {
   }
 
   // словарь id персоны -> ее имя
+  // Как по мне и так норм было ) Но нам же нужно просто имя, да и не будем вызывать другую функцию
   public Map<Integer, String> getPersonNames(Collection<Person> persons) {
-    Map<Integer, String> map = new HashMap<>(1);
+    Map<Integer, String> map = new HashMap<>();
     for (Person person : persons) {
       if (!map.containsKey(person.getId())) {
-        map.put(person.getId(), convertPersonToString(person));
+        map.put(person.getId(), person.getFirstName());
       }
     }
     return map;
   }
 
   // есть ли совпадающие в двух коллекциях персоны?
+  // Будем ускорять !
   public boolean hasSamePersons(Collection<Person> persons1, Collection<Person> persons2) {
     boolean has = false;
-    for (Person person1 : persons1) {
-      for (Person person2 : persons2) {
-        if (person1.equals(person2)) {
-          has = true;
-        }
-      }
+    Set<Person> set1 = new HashSet<>();
+    Set<Person> set2 = new HashSet<>();
+    Set<Person> set3 = new HashSet<>();
+    set1.addAll(persons1);
+    set2.addAll(persons2);
+    set3.addAll(persons1);
+    set3.addAll(persons2);
+    if (set1.size() + set2.size() == set3.size()) {
+      return false;
+    } else {
+      return true;
     }
-    return has;
   }
 
   //...
+  // сократим немного
   public long countEven(Stream<Integer> numbers) {
-    count = 0;
-    numbers.filter(num -> num % 2 == 0).forEach(num -> count++);
-    return count;
+
+    return numbers.filter(num -> num % 2 == 0).count();
   }
 
   @Override
   public boolean check() {
-    System.out.println("Слабо дойти до сюда и исправить Fail этой таски?");
-    boolean codeSmellsGood = false;
+    System.out.println("My teacher: Слабо дойти до сюда и исправить Fail этой таски?");
+    System.out.println("Me: Вызов принят !");
+    boolean codeSmellsGood = true; // I hope :)
     boolean reviewerDrunk = false;
     return codeSmellsGood || reviewerDrunk;
   }

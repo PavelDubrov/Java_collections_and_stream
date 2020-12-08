@@ -19,7 +19,14 @@ public class Task4 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons) {
-    return new ArrayList<>();
+
+    // Создаю лист сразу с известным capacity
+    // Ну и заполняю его в цикле. Асимптотика O(n)
+    List<ApiPersonDto> dtoList = new ArrayList<>(persons.size());
+    for (Person person : persons) {
+      dtoList.add(convert(person));
+    }
+    return dtoList;
   }
 
   private static ApiPersonDto convert(Person person) {
