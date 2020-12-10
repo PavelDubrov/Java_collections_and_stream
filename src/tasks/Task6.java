@@ -20,7 +20,7 @@ public class Task6 implements Task {
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
 
-    Set<String> name_area = new HashSet<>();
+    Set<String> nameArea = new HashSet<>();
     Map<Integer, String> areasMap = new HashMap<>();
 
     for (Area area : areas) {
@@ -32,12 +32,12 @@ public class Task6 implements Task {
       set = personAreaIds.get(person.getId());
 
       for (Integer areaId : set) {
-        name_area.add(person.getFirstName() + " - " + areasMap.get(areaId));
+        nameArea.add(person.getFirstName() + " - " + areasMap.get(areaId));
       }
     }
     // Я подозреваю что тут асимптотика O(N*M)
     // где N - размер коллекции Персон, а M - средниее количество городов на 1 персону.
-    return name_area;
+    return nameArea;
   }
 
   @Override

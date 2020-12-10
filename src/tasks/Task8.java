@@ -31,7 +31,8 @@ public class Task8 implements Task {
   // Пускай функция сама все делает, не будем лезть в другую функцию
   public Set<String> getDifferentNames(List<Person> persons) {
 
-    return persons.stream().skip(1).map(Person::getFirstName).collect(Collectors.toSet());
+
+    return new HashSet<String>(getNames(persons));
   }
 
   //Для фронтов выдадим полное имя, а то сами не могут
